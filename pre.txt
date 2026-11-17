@@ -1,0 +1,72 @@
+import pandas as pd
+from sklearn.preprocessing import LabelEncoder, MinMaxScaler
+from sklearn.model_selection import train_test_split
+import matplotlib.pyplot as plt
+
+heart = pd.read_csv("Heart_dataset.csv")
+heart
+
+
+heart = heart.drop(columns=["Unnamed: 0"])
+
+
+heart.mean(numeric_only=True)
+
+
+heart.mode(numeric_only=True)
+
+
+heart.median(numeric_only=True)
+
+
+heart.isnull().any()
+
+
+heart.isnull().sum()
+
+
+le = LabelEncoder()
+cols = ['ChestPain', 'Thal' , 'AHD']
+for col in cols:
+    heart[col]=le.fit_transform(heart[col])
+
+
+heart
+
+
+heart["RestBP"] = heart["RestBP"].fillna(heart.RestBP.mean())
+heart["Fbs"] = heart["Fbs"].fillna(heart.Fbs.median())
+heart["RestECG"] = heart["RestECG"].fillna(heart.RestECG.median())
+heart["MaxHR"] = heart["MaxHR"].fillna(heart.MaxHR.median())
+heart["ExAng"] = heart["ExAng"].fillna(heart.ExAng.median())
+heart["Slope"] = heart["Slope"].fillna(heart.Slope.median())
+heart["Ca"] = heart["Ca"].fillna(heart.Ca.median())
+heart["Thal"] = heart["Thal"].fillna(heart.Thal.median())
+
+
+heart.isnull().sum()
+
+
+heart
+
+
+heart[["Age", "RestBP", "Chol", "MaxHR", "Oldpeak"]].hist(figsize=(18, 12), bins=20)
+plt.tight_layout()
+
+
+fig, ax = plt.subplots(figsize=(18, 12))
+box = ax.boxplot(heart)
+plt.plot
+
+
+x = heart.drop(columns=['AHD'])
+y = heart['AHD']
+x_train,x_test,y_train,y_test = train_test_split(x,y,train_size=0.8,random_state=42)
+continuous_cols = ['Age', 'RestBP', 'Chol', 'MaxHR', 'Oldpeak']
+min_max_scaler = MinMaxScaler()
+x_train[continuous_cols] = min_max_scaler.fit_transform(x_train[continuous_cols])
+x_test[continuous_cols] = min_max_scaler.transform(x_test[continuous_cols])
+x_train
+
+
+x_test
